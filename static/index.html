@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTech 360 | Integrated Student Management & Prediction</title>
+    <meta name="description" content="A comprehensive AI-driven platform for managing student data, predicting academic risks, and optimizing educational outcomes.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <i class="fa-solid fa-graduation-cap"></i>
+                <span>EduTech 360</span>
+            </div>
+            <nav id="sidebarNav">
+                <div class="nav-item active" data-target="dashboardPage">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-target="predictorPage">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Risk Predictor</span>
+                </div>
+                <div class="nav-item" data-target="studentsPage">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Students List</span>
+                </div>
+                <div class="nav-item" data-target="analyticsPage">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Analytics</span>
+                </div>
+                <div class="nav-item" data-target="settingsPage">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Portal Settings</span>
+                </div>
+            </nav>
+            <div class="sidebar-footer">
+                <p>EduTech v2.1.0-ENTERPRISE</p>
+                <small>Secure AI Environment</small>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header>
+                <div class="header-info">
+                    <h1 id="pageTitle">Dashboard Overview</h1>
+                    <p id="pageDescription">Global system statistics and institutional performance trends.</p>
+                </div>
+                <div class="user-profile">
+                    <div class="search-bar">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="globalSearch" placeholder="Search system...">
+                    </div>
+                    <div class="notification" id="toggleNotifications"><i class="fa-solid fa-bell"></i></div>
+                    <div class="avatar" id="editProfile"><i class="fa-solid fa-user-tie"></i></div>
+                </div>
+            </header>
+
+            <!-- 1. DASHBOARD PAGE -->
+            <section id="dashboardPage" class="page-content active">
+                <div class="stats-bar" id="statsBar">
+                    <div class="stat-card">
+                        <span class="stat-label">System Students</span>
+                        <span class="stat-value" id="statTotal">-</span>
+                        <div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +4.2%</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Avg Attendance</span>
+                        <span class="stat-value" id="statAttendance">-</span>
+                        <div class="trend"><i class="fa-solid fa-circle-check"></i> Standard</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">Institutional GPA</span>
+                        <span class="stat-value" id="statGrade">-</span>
+                        <div class="trend up"><i class="fa-solid fa-arrow-trend-up"></i> +0.15</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-label">System Risk Rate</span>
+                        <span class="stat-value" id="statRisk">- %</span>
+                        <div class="trend down"><i class="fa-solid fa-arrow-trend-down"></i> -1.2%</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-charts">
+                    <div class="card chart-card">
+                        <h2><i class="fa-solid fa-chart-simple"></i> Grade Distribution</h2>
+                        <canvas id="gradeChart"></canvas>
+                    </div>
+                    <div class="card chart-card">
+                        <h2><i class="fa-solid fa-chart-area"></i> Attendance vs Performance</h2>
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. PREDICTOR PAGE -->
+            <section id="predictorPage" class="page-content">
+                <div class="dashboard-grid">
+                    <div class="card prediction-form-card">
+                        <h2><i class="fa-solid fa-file-pen"></i> New Risk Analysis</h2>
+                        <form id="riskForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="Age">Age</label>
+                                    <input type="number" id="Age" name="Age" min="15" max="30" value="20" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Gender">Gender</label>
+                                    <select id="Gender" name="Gender" required>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Attendance_Percentage">Attendance (%)</label>
+                                    <input type="number" id="Attendance_Percentage" name="Attendance_Percentage" min="0" max="100" step="0.1" value="85.0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Previous_Grade">Previous Grade</label>
+                                    <input type="number" id="Previous_Grade" name="Previous_Grade" min="0" max="100" step="0.1" value="75.0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Current_Grade">Current Grade</label>
+                                    <input type="number" id="Current_Grade" name="Current_Grade" min="0" max="100" step="0.1" value="78.0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Study_Hours">Study Hours</label>
+                                    <input type="number" id="Study_Hours" name="Study_Hours" min="0" max="24" step="0.1" value="5.5" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Assignments_Submitted">Assignments</label>
+                                    <input type="number" id="Assignments_Submitted" name="Assignments_Submitted" min="0" max="10" value="8" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Behavior_Score">Behavior Score</label>
+                                    <input type="number" id="Behavior_Score" name="Behavior_Score" min="0" max="10" value="8" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Parent_Education">Parent Education</label>
+                                    <select id="Parent_Education" name="Parent_Education" required>
+                                        <option value="High School">High School</option>
+                                        <option value="Bachelor">Bachelor Degree</option>
+                                        <option value="Master">Master Degree</option>
+                                        <option value="PhD">PhD</option>
+                                        <option value="Unknown">Unknown</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Family_Income">Family Income</label>
+                                    <select id="Family_Income" name="Family_Income" required>
+                                        <option value="Low">Low</option>
+                                        <option value="Medium" selected>Medium</option>
+                                        <option value="High">High</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Internet_Access">Internet Access</label>
+                                    <select id="Internet_Access" name="Internet_Access" required>
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" class="analyze-btn">
+                                <i class="fa-solid fa-bolt"></i> Execute AI Model
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card result-card">
+                        <h2><i class="fa-solid fa-magnifying-glass-chart"></i> Diagnostic Report</h2>
+                        <div id="resultContent" class="result-placeholder">
+                            <div class="loader-container" style="display:none;">
+                                <div class="loader"></div>
+                                <p>Optimizing Neural Weights...</p>
+                            </div>
+                            <div class="placeholder-msg">
+                                <p>Click "Execute AI Model" to run inference.</p>
+                            </div>
+                        </div>
+                        <div id="riskDisplay" class="risk-display" style="display:none;">
+                            <div class="risk-gauge">
+                                <svg viewBox="0 0 100 100">
+                                    <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
+                                    <circle class="gauge-fill" id="gaugeFill" cx="50" cy="50" r="45"></circle>
+                                </svg>
+                                <div class="risk-value">
+                                    <span id="riskPct">0%</span>
+                                    <small>System Risk</small>
+                                </div>
+                            </div>
+                            <div class="risk-status" id="riskStatus">-</div>
+                            <p id="riskDescription"></p>
+                        </div>
+                    </div>
+
+                    <div class="card history-card full-width">
+                         <h2><i class="fa-solid fa-history"></i> Analytical History</h2>
+                         <div class="history-table-container">
+                            <table>
+                                <thead>
+                                    <tr><th>Analysis Date</th><th>Student ID</th><th>Performance</th><th>Risk Index</th><th>Status</th></tr>
+                                </thead>
+                                <tbody id="historyBody"></tbody>
+                            </table>
+                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. STUDENTS LIST PAGE -->
+            <section id="studentsPage" class="page-content">
+                <div class="card">
+                    <div class="table-header">
+                        <h2><i class="fa-solid fa-address-book"></i> Enrolled Student database</h2>
+                        <div class="table-actions">
+                            <button id="addStudentBtn"><i class="fa-solid fa-plus"></i> Enroll Student</button>
+                            <button id="exportData"><i class="fa-solid fa-file-export"></i> Export CSV</button>
+                        </div>
+                    </div>
+                    <div class="history-table-container">
+                        <table id="fullStudentsTable">
+                            <thead>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Gender</th>
+                                    <th>Age</th>
+                                    <th>Attendance</th>
+                                    <th>Current Grade</th>
+                                    <th>Behavior</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fullStudentsBody">
+                                <!-- Loaded from API -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. ANALYTICS PAGE -->
+            <section id="analyticsPage" class="page-content">
+                <div class="analytics-grid">
+                    <div class="card large">
+                        <h2><i class="fa-solid fa-microchip"></i> AI Influence Factors</h2>
+                        <p>Detailed breakdown of how each metric affects the student risk score.</p>
+                        <canvas id="influenceChart"></canvas>
+                    </div>
+                    <div class="card">
+                        <h2><i class="fa-solid fa-venus-mars"></i> Demographic Distribution</h2>
+                        <canvas id="genderDistribution"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. SETTINGS PAGE -->
+            <section id="settingsPage" class="page-content">
+                <div class="settings-container">
+                    <div class="card">
+                        <h2><i class="fa-solid fa-fingerprint"></i> System Security & Biometrics</h2>
+                        <div class="settings-row">
+                            <div class="setting-info">
+                                <h3>Enable Biometric Attendance</h3>
+                                <p>Use fingerprint/facial scanning for automated attendance tracking.</p>
+                            </div>
+                            <div class="switch">
+                                <input type="checkbox" id="biometricToggle" checked>
+                                <label for="biometricToggle"></label>
+                            </div>
+                        </div>
+                        <div class="settings-row">
+                            <div class="setting-info">
+                                <h3>AI Prediction Mode</h3>
+                                <p>Toggle between "Conservative" and "Strict" risk analysis modes.</p>
+                            </div>
+                            <select class="custom-select">
+                                <option>Strict (Logistic High Impact)</option>
+                                <option>Conservative</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="toast">Portal Update: AI model optimized.</div>
+
+    <!-- ADD/EDIT STUDENT MODAL -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content card">
+            <header class="modal-header">
+                <h2 id="modalTitle">Enroll New Student</h2>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </header>
+            <form id="studentDataForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Student ID</label>
+                        <input type="number" name="Student_ID" id="mStudentId" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Age</label>
+                        <input type="number" name="Age" id="mAge" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select name="Gender" id="mGender">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Attendance %</label>
+                        <input type="number" name="Attendance_Percentage" id="mAttendance" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Current Grade</label>
+                        <input type="number" name="Current_Grade" id="mGrade" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Behavior Score</label>
+                        <input type="number" name="Behavior_Score" id="mBehavior" max="10" required>
+                    </div>
+                    <div class="form-group">
+                         <label>Previous Grade</label>
+                         <input type="number" name="Previous_Grade" id="mPrevGrade" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Study Hours</label>
+                        <input type="number" name="Study_Hours" id="mStudy" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                         <label>Assignments</label>
+                         <input type="number" name="Assignments_Submitted" id="mAssignments" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" id="cancelModal">Cancel</button>
+                    <button type="submit" class="btn-save">Execute Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

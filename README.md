@@ -1,49 +1,66 @@
-# EduTech Student Academic Risk Prediction
+# EduTech 360 | Student Management & Academic Risk Prediction
 
-This project uses machine learning to predict student academic risk based on various factors such as attendance, grades, and parental education. It helps educational institutions identify students who may need additional support.
+EduTech 360 is a premium, full-stack educational management platform that utilizes machine learning to identify students at academic risk while providing a comprehensive suite for student record management.
 
-## 📊 Project Overview
+![EduTech Dashboard Mockup](https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop)
 
-- **Objective**: Classify students into "Risk" or "No Risk" categories.
-- **Model**: Logistic Regression.
-- **Accuracy**: ~77%
-- **Data Source**: `student_academic_risk_dataset_5000.csv` (contains 5000 records).
+## 🚀 Key Features
+
+- **AI-Driven Risk Prediction**: Logistic Regression model trained on 5,000+ student records with 77% accuracy.
+- **Full CRUD Student Database**: Search, Enroll, Edit, and Delete student records directly from a premium glassmorphism dashboard.
+- **Institutional Analytics**: Real-time charts for GPA distribution, attendance trends, and AI impact factors.
+- **Multi-Page SPA**: Integrated Dashboard, Predictor, and Settings pages.
+- **Modern Backend**: FastAPI-powered REST API for high-performance data handling.
+
+## 🛠️ Prerequisites
+
+Ensure you have **Python 3.8+** installed. You will also need the following libraries:
+
+```bash
+pip install fastapi uvicorn pandas numpy scikit-learn pydantic
+```
 
 ## 📂 Project Structure
 
-- `train_model.py`: Main script to clean data, train the model, and evaluate performance.
-- `student_academic_risk_dataset_5000.csv`: The dataset used for training and testing.
-- `models/`: Directory where the trained model is saved (`academic_risk_model.pkl`).
-- `EDA.ipynb`: Jupyter notebook for exploratory data analysis.
-- `check_csv.py`: Helper script to inspect dataset columns and missing values.
+- `main.py`: The FastAPI backend server and static file host.
+- `train_model.py`: Script to train the ML model and generate the deployment bundle.
+- `static/`: Contains the premium frontend (HTML, CSS, JS).
+- `models/`: Stores the trained model bundle (`academic_risk_model_bundle.pkl`).
+- `student_academic_risk_dataset_5000.csv`: The core student database.
 
-## 🛠️ Installation & Setup
+## 🏃 Running the Application
 
-1. **Requirements**:
-   Ensure you have Python installed, along with the following libraries:
-   ```bash
-   pip install pandas numpy scikit-learn
-   ```
+### 1. Training the Model (Optional)
+If you want to retrain the model or update the deployment bundle:
+```bash
+python train_model.py
+```
+This will regenerate the model bundle in the `models/` directory with updated `StandardScaler` and `LabelEncoders`.
 
-2. **Run Training**:
-   Execute the training script to process the data and save the model:
-   ```bash
-   python train_model.py
-   ```
+### 2. Launching the Web Portal
+To start the integrated management system:
+```bash
+python main.py
 
-## 🧠 Model Features
+error show then 
+netstat -ano | findstr :8000
 
-The model uses the following features for prediction:
-- **Demographics**: Age, Gender.
-- **Academic Performance**: Previous Grade, Current Grade, Assignments Submitted.
-- **Engagement**: Attendance Percentage, Study Hours, Behavior Score.
-- **Environment**: Parent Education, Family Income, Internet Access.
+taskkill /F /PID 22828
+```
+After the server starts, open your web browser and navigate to:
+👉 **[http://localhost:8000/app/index.html](http://localhost:8000/app/index.html)**
 
-## 📈 Evaluation Results
+## 📊 Using the Platform
 
-The model achieves the following performance metrics:
-- **Accuracy**: 0.77
-- **F1-Score**: ~0.80 (for Risk category)
+1. **Dashboard**: View global institutional metrics and performance trends.
+2. **Risk Predictor**: Enter student metrics to run real-time AI diagnostic reports.
+3. **Student database**: 
+    - Use the search bar to filter records by ID or Gender.
+    - Click "Enroll Student" to add new records to the system.
+    - Click the "Edit" or "Delete" icons on any row to manage student data.
+4. **Analytics**: Review advanced radar charts for AI influence factors and demographic distribution.
 
-## 📝 License
-This project is for educational purposes as part of the 6th Semester Project.
+---
+
+### Created by Antigravity - Advanced Coding Agentic AI
+*Engineering State-of-the-Art Educational Solutions*
