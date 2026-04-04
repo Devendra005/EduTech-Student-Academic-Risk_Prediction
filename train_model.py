@@ -26,6 +26,11 @@ print("Dataset Shape:", df.shape)
 # ==============================
 df = df.drop_duplicates()
 df['Parent_Education'] = df['Parent_Education'].fillna('Unknown')
+df['Internet_Access'] = df['Internet_Access'].fillna('No')
+df['Family_Income'] = df['Family_Income'].fillna('Medium')
+
+# Drop any rows where Academic_Risk is NaN
+df = df.dropna(subset=['Academic_Risk'])
 
 # ==============================
 # 4. Encode Categorical Variables
