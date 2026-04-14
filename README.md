@@ -1,20 +1,26 @@
-# EduTrace | Student Performance & Dropout Risk Prediction
+# EduTrace | Lumina Academic Management Platform
 
-EduTrace is a premium, full-stack educational management platform that utilizes machine learning to identify students at dropout risk while providing a comprehensive suite for student performance management.
+EduTrace is a premium, AI-powered institutional management platform. It utilizes advanced machine learning to identify student dropout risks while offering a sophisticated, editorial-style interface for academic record management and data visualization.
 
-![EduTrace Dashboard Mockup](https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop)
+![EduTrace Interface Mockup](https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop)
+
+## 🌌 The Ethereal Observatory Design
+Based on the **Lumina Academic** design system, the platform adopts an "Editorial" aesthetic:
+- **Dual-Font Precision**: Utilizing **Manrope** for authoritative headlines and **Inter** for technical data legibility.
+- **Glassmorphism Components**: Premium glass cards with `24px` backdrop blur and high-chroma cyan accents.
+- **Ghost Border System**: Minimalist input fields that respond with neon glows upon interaction.
+- **Asymmetric Layouts**: A non-rigid, modern dashboard structure that prioritizes visual depth.
 
 ## 🚀 Key Features
 
-- **AI-Driven Risk Prediction**: Logistic Regression model trained on 5,000+ student records with 77% accuracy.
-- **Full CRUD Student Database**: Search, Enroll, Edit, and Delete student records directly from a premium glassmorphism dashboard.
-- **Institutional Analytics**: Real-time charts for GPA distribution, attendance trends, and AI impact factors.
-- **Multi-Page SPA**: Integrated Dashboard, Predictor, and Settings pages.
-- **Modern Backend**: FastAPI-powered REST API for high-performance data handling.
+- **Neural Diagnostic Engine**: Logistic Regression model providing real-time risk scores and status updates.
+- **Editorial Student Database**: Full CRUD capabilities within a sleek, searchable institutional record system.
+- **High-Impact Analytics**: Expansive radar charts for AI influence factors and Bar/Doughnut charts for demographic trends.
+- **Institutional Scale**: Designed for handling thousands of records with rapid search and data export.
 
 ## 🛠️ Prerequisites
 
-Ensure you have **Python 3.8+** installed. You will also need the following libraries:
+Ensure you have **Python 3.8+** installed. Install the necessary dependencies:
 
 ```bash
 pip install fastapi uvicorn pandas numpy scikit-learn pydantic
@@ -22,45 +28,49 @@ pip install fastapi uvicorn pandas numpy scikit-learn pydantic
 
 ## 📂 Project Structure
 
-- `main.py`: The FastAPI backend server and static file host.
-- `train_model.py`: Script to train the ML model and generate the deployment bundle.
-- `static/`: Contains the premium frontend (HTML, CSS, JS).
-- `models/`: Stores the trained model bundle (`dropout_risk_model_bundle.pkl`).
-- `student_dropout_risk_dataset_5000.csv`: The core student database.
+- `main.py`: High-performance FastAPI backend serving the AI engine and frontend.
+- `train_model.py`: Training script for generating the deployment model bundle.
+- `static/`: Premium "Lumina Academic" frontend (HTML, CSS, JS).
+- `models/`: Stores the quantized AI deployment bundle.
+- `student_academic_risk_dataset_5000.csv`: Central database for student records.
 
 ## 🏃 Running the Application
 
-### 1. Training the Model (Optional)
-If you want to retrain the model or update the deployment bundle:
+### 1. Model Preparation (Optional)
+To regenerate or update the predictive neural weights:
 ```bash
 python train_model.py
 ```
-This will regenerate the model bundle in the `models/` directory with updated `StandardScaler` and `LabelEncoders`.
 
-### 2. Launching the Web Portal
-To start the integrated management system:
+### 2. Launching the Management Portal
+Start the integrated backend and frontend server:
 ```bash
 python main.py
+```
 
-error show then 
+#### Troubleshooting Port Conflicts
+If you encounter a "Port already in use" error:
+```powershell
+# Find the Process ID using port 8000
 netstat -ano | findstr :8000
 
-taskkill /F /PID 22828
+# Kill the process (Replace <PID> with the ID found)
+taskkill /F /PID <PID>
 ```
-After the server starts, open your web browser and navigate to:
-👉 **[http://localhost:8000/app/index.html](http://localhost:8000/app/index.html)**
+
+### 3. Accessing the Platform
+Open your browser and navigate to the root endpoint:
+👉 **[http://localhost:8000/](http://localhost:8000/)**
 
 ## 📊 Using the Platform
 
-1. **Dashboard**: View global institutional metrics and performance trends.
-2. **Risk Predictor**: Enter student metrics to run real-time AI diagnostic reports.
-3. **Student database**: 
-    - Use the search bar to filter records by ID or Gender.
-    - Click "Enroll Student" to add new records to the system.
-    - Click the "Edit" or "Delete" icons on any row to manage student data.
-4. **Analytics**: Review advanced radar charts for AI influence factors and demographic distribution.
+1. **Dashboard**: Monitor global institutional performance and average risk indexes.
+2. **Predictor**: Use the "Run Neural Diagnostic" tool to analyze individual student telemetry.
+3. **Database**: Manage centralized student records, search by ID, and export institutional data to CSV.
+4. **Analytics**: Drill down into "AI Influence Factors" to understand the core metrics driving student success.
 
 ---
 
 ### Created by Antigravity - Advanced Coding Agentic AI
-*Engineering State-of-the-Art Educational Solutions*
+*Engineering State-of-the-Art Educational Solutions with the Lumina Design System*
+

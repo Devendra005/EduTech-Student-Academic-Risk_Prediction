@@ -1,9 +1,9 @@
 // --- GLOBAL STATE & CONFIG ---
 let charts = {};
 const chartColors = {
-    primary: '#00e0ff',
-    secondary: '#0056fb',
-    accent: '#ef4444',
+    primary: '#72dcff',
+    secondary: '#669dff',
+    accent: '#ff716c',
     bg: 'rgba(255, 255, 255, 0.05)'
 };
 
@@ -173,19 +173,19 @@ async function loadStudents(query = "") {
 
         students.forEach(student => {
             const riskStatus = student.Academic_Risk === 1 ? 'At Risk' : 'Secure';
-            const riskColor = student.Academic_Risk === 1 ? 'var(--accent-red)' : 'var(--accent-green)';
+            const riskClass = student.Academic_Risk === 1 ? 'status-at-risk' : 'status-optimal';
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td style="font-weight:800; color:var(--primary-color)">#${student.Student_ID}</td>
+                <td style="font-weight:800; color:var(--primary)">#${student.Student_ID}</td>
                 <td>${student.Gender}</td>
                 <td>${student.Age}</td>
                 <td>${student.Attendance_Percentage}%</td>
-                <td><span style="font-weight:600">${student.Current_Grade}</span></td>
-                <td><div class="trend" style="color:var(--accent-green)">Score: ${student.Behavior_Score}/10</div></td>
-                <td><span class="status-badge" style="background:${riskColor}22; color:${riskColor}; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">${riskStatus}</span></td>
+                <td>${student.Current_Grade}</td>
+                <td>${student.Behavior_Score} Index</td>
+                <td><span class="status-pill ${riskClass}">${riskStatus}</span></td>
                 <td>
-                    <button class="small-action" onclick="editStudent(${student.Student_ID})"><i class="fa-solid fa-pen"></i></button>
-                    <button class="small-action" onclick="deleteStudent(${student.Student_ID})" style="color:var(--accent-red)"><i class="fa-solid fa-trash"></i></button>
+                    <button class="action-btn" style="color:var(--primary)" onclick="editStudent(${student.Student_ID})"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button class="action-btn" style="color:var(--accent-red)" onclick="deleteStudent(${student.Student_ID})"><i class="fa-solid fa-trash-can"></i></button>
                 </td>
             `;
             body.appendChild(row);
@@ -195,7 +195,7 @@ async function loadStudents(query = "") {
 
 // --- REST OF THE LOGIC (PREVIOUSLY IMPLEMENTED) ---
 function setupNavigation() {
-    const navItems = document.querySelectorAll('.nav-item');
+    const navItems = document.querySelectorAll('.sidebar .nav-item'); // Limit to sidebar items
     const pages = document.querySelectorAll('.page-content');
     const pageTitle = document.getElementById('pageTitle');
     const pageDesc = document.getElementById('pageDescription');
@@ -203,10 +203,13 @@ function setupNavigation() {
     navItems.forEach(item => {
         item.addEventListener('click', () => {
             const target = item.getAttribute('data-target');
+            if (!target) return;
+            
             navItems.forEach(i => i.classList.remove('active'));
             item.classList.add('active');
             pages.forEach(p => p.classList.remove('active'));
-            document.getElementById(target).classList.add('active');
+            const targetPage = document.getElementById(target);
+            if (targetPage) targetPage.classList.add('active');
             updateHeader(target, pageTitle, pageDesc);
         });
     });
@@ -228,11 +231,11 @@ function initCharts() {
     const ctx2 = document.getElementById('performanceChart').getContext('2d');
     const ctx3 = document.getElementById('influenceChart').getContext('2d');
     const ctx4 = document.getElementById('genderDistribution').getContext('2d');
-    Chart.defaults.color = '#94a3b8';
-    Chart.defaults.font.family = "'Outfit', sans-serif";
-    charts.grades = new Chart(ctx1, { type: 'bar', data: { labels: ['0-20', '21-40', '41-60', '61-80', '81-100'], datasets: [{ label: 'Count', data: [120, 450, 1800, 2100, 530], backgroundColor: 'rgba(0, 224, 255, 0.5)', borderColor: chartColors.primary, borderWidth: 1, borderRadius: 8 }] } });
+    Chart.defaults.color = '#a9abb3';
+    Chart.defaults.font.family = "'Manrope', sans-serif";
+    charts.grades = new Chart(ctx1, { type: 'bar', data: { labels: ['0-20', '21-40', '41-60', '61-80', '81-100'], datasets: [{ label: 'Count', data: [120, 450, 1800, 2100, 530], backgroundColor: 'rgba(114, 220, 255, 0.4)', borderColor: chartColors.primary, borderWidth: 1, borderRadius: 12 }] }, options: { scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } } } });
     charts.performance = new Chart(ctx2, { type: 'line', data: { labels: ['T1', 'T2', 'T3', 'T4', 'T5'], datasets: [{ label: 'Attendance', data: [82, 85, 84, 88, 91], borderColor: chartColors.primary, tension: 0.4 }, { label: 'Grade', data: [71, 74, 73, 78, 82], borderColor: chartColors.secondary, tension: 0.4 }] } });
-    charts.influence = new Chart(ctx3, { type: 'radar', data: { labels: ['Attendance', 'Prev Grade', 'Study Hours', 'Behavior', 'Family Income', 'Internet'], datasets: [{ label: 'Impact', data: [85, 75, 90, 60, 40, 55], backgroundColor: 'rgba(0, 86, 251, 0.2)', borderColor: chartColors.secondary }] } });
+    charts.influence = new Chart(ctx3, { type: 'radar', data: { labels: ['Attendance', 'Prev Grade', 'Study Hours', 'Behavior', 'Family Income', 'Internet'], datasets: [{ label: 'Significance %', data: [85, 75, 90, 60, 40, 55], backgroundColor: 'rgba(114, 220, 255, 0.15)', borderColor: chartColors.primary, borderWidth: 3, pointBackgroundColor: chartColors.primary, pointHoverRadius: 8 }] }, options: { scales: { r: { grid: { color: 'rgba(255,255,255,0.05)' }, angleLines: { color: 'rgba(255,255,255,0.05)' }, pointLabels: { font: { size: 14, weight: 'bold' }, color: '#ecedf6' }, ticks: { display: false } } }, plugins: { legend: { display: false } } } });
     charts.gender = new Chart(ctx4, { type: 'doughnut', data: { labels: ['Female', 'Male'], datasets: [{ data: [52, 48], backgroundColor: [chartColors.primary, chartColors.secondary], borderWidth: 0 }] } });
 }
 
@@ -297,7 +300,7 @@ function loadHistory() {
         
         history.forEach(item => {
             const row = document.createElement('tr');
-            row.innerHTML = `<td>${item.date}</td><td style="font-weight: 800">#${item.id}</td><td>${item.grade}</td><td style="color:var(--primary-color); font-weight:800">${item.score}%</td><td><span class="trend" style="color:${item.prediction === 1 ? 'var(--accent-red)' : 'var(--accent-green)'}">${item.status}</span></td>`;
+            row.innerHTML = `<td>${item.date}</td><td style="font-weight: 800">#${item.id}</td><td>${item.grade}</td><td style="color:var(--primary); font-weight:800">${item.score}%</td><td><span class="trend" style="color:${item.prediction === 1 ? 'var(--accent-red)' : 'var(--accent-green)'}">${item.status}</span></td>`;
             body.appendChild(row);
         });
     } catch (err) {

@@ -1,5 +1,5 @@
 Student_ID,Age,Gender,Attendance_Percentage,Previous_Grade,Current_Grade,Assignments_Submitted,Behavior_Score,Parent_Education,Family_Income,Internet_Access,Study_Hours,Academic_Risk
-1001,18,Male,79.8,77.2,77.2,9,3,Postgraduate,Medium,Yes,0.8,1.0
+1001,18,Male,79.8,77.2,77.2,9,3,High School,Medium,Yes,0.8,1.0
 1002,19,Female,100.0,88.1,46.4,7,2,Graduate,Medium,Yes,4.5,1.0
 1003,21,Female,82.2,58.6,62.2,6,1,High School,Medium,Yes,5.5,0.0
 1004,17,Male,68.5,75.2,71.4,6,1,,Medium,Yes,4.0,1.0
@@ -4999,3 +4999,4 @@ Student_ID,Age,Gender,Attendance_Percentage,Previous_Grade,Current_Grade,Assignm
 5998,17,Female,96.5,61.3,81.5,3,3,Graduate,Medium,Yes,5.0,0.0
 5999,15,Male,75.1,55.7,65.1,8,4,Graduate,Medium,No,5.3,0.0
 1050,22,Male,35.0,65.5,60.5,8,5,,,,3.0,
+5001,23,Male,85.0,75.0,85.0,6,3,PhD,High,Yes,5.0,0.0

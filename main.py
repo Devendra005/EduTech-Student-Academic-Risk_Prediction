@@ -17,9 +17,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Serve static files from the 'static' directory
-os.makedirs("static", exist_ok=True)
-app.mount("/app", StaticFiles(directory="static", html=True), name="static")
+# Static files will be mounted at the end to avoid route conflicts
 
 # Load the model bundle
 MODEL_PATH = "models/academic_risk_model_bundle.pkl"
@@ -175,9 +173,15 @@ async def get_student(student_id: int):
             return student.iloc[0].to_dict()
     raise HTTPException(status_code=404, detail="Student not found")
 
+from fastapi.responses import FileResponse
+
 @app.get("/")
 async def root():
-    return {"message": "EduTrace Student Performance & Dropout Risk Prediction API is running!"}
+    return FileResponse("static/index.html")
+
+# Mount static files at root AFTER all API routes
+os.makedirs("static", exist_ok=True)
+app.mount("/", StaticFiles(directory="static", html=True), name="static")
 
 if __name__ == "__main__":
     import uvicorn
