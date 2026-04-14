@@ -7,7 +7,7 @@ import numpy as np
 import pickle
 import os
 
-app = FastAPI(title="EduTech Student Academic Risk Predictor")
+app = FastAPI(title="EduTrace Student Performance & Dropout Risk Predictor")
 
 # Enable CORS for frontend
 app.add_middleware(
@@ -33,18 +33,7 @@ model = bundle["model"]
 scaler = bundle["scaler"]
 encoders = bundle["encoders"]
 feature_names = bundle["features"]
-
-# Load dataset statistics for the dashboard
 DATA_PATH = "student_academic_risk_dataset_5000.csv"
-stats = {}
-if os.path.exists(DATA_PATH):
-    df_full = pd.read_csv(DATA_PATH)
-    stats = {
-        "avg_attendance": round(float(df_full["Attendance_Percentage"].mean()), 1),
-        "avg_grade": round(float(df_full["Current_Grade"].mean()), 1),
-        "risk_percentage": round(float(df_full["Academic_Risk"].mean() * 100), 1),
-        "total_students": len(df_full)
-    }
 
 class StudentData(BaseModel):
     Age: int
@@ -58,6 +47,26 @@ class StudentData(BaseModel):
     Family_Income: str
     Internet_Access: str
     Study_Hours: float
+
+class FullStudentData(StudentData):
+    Student_ID: int
+    Academic_Risk: int
+
+def calculate_stats():
+    global stats
+    if os.path.exists(DATA_PATH):
+        df_full = pd.read_csv(DATA_PATH)
+        stats = {
+            "avg_attendance": round(float(df_full["Attendance_Percentage"].mean()), 1),
+            "avg_grade": round(float(df_full["Current_Grade"].mean()), 1),
+            "risk_percentage": round(float(df_full["Academic_Risk"].mean() * 100), 1),
+            "total_students": len(df_full)
+        }
+    else:
+        stats = {"avg_attendance": 0, "avg_grade": 0, "risk_percentage": 0, "total_students": 0}
+
+# Initial stats calculation
+calculate_stats()
 
 @app.post("/predict")
 async def predict(data: StudentData):
@@ -119,24 +128,28 @@ async def get_students(limit: int = 50, search: str = None):
     return []
 
 @app.post("/students")
-async def add_student(data: dict):
+async def add_student(data: FullStudentData):
     if os.path.exists(DATA_PATH):
         df_full = pd.read_csv(DATA_PATH)
-        new_row = pd.DataFrame([data])
+        new_row = pd.DataFrame([data.model_dump()])
         df_full = pd.concat([df_full, new_row], ignore_index=True)
         df_full.to_csv(DATA_PATH, index=False)
+        calculate_stats()
         return {"status": "success", "message": "Student added successfully"}
     return {"status": "error", "message": "Database not found"}
 
 @app.put("/student/{student_id}")
-async def update_student(student_id: int, data: dict):
+async def update_student(student_id: int, data: FullStudentData):
     if os.path.exists(DATA_PATH):
         df_full = pd.read_csv(DATA_PATH)
         if student_id in df_full['Student_ID'].values:
-            for key, value in data.items():
+            # Update all fields from the model
+            update_dict = data.model_dump()
+            for key, value in update_dict.items():
                 if key in df_full.columns:
                     df_full.loc[df_full['Student_ID'] == student_id, key] = value
             df_full.to_csv(DATA_PATH, index=False)
+            calculate_stats()
             return {"status": "success", "message": "Student updated"}
     raise HTTPException(status_code=404, detail="Student not found")
 
@@ -147,6 +160,7 @@ async def delete_student(student_id: int):
         if student_id in df_full['Student_ID'].values:
             df_full = df_full[df_full['Student_ID'] != student_id]
             df_full.to_csv(DATA_PATH, index=False)
+            calculate_stats()
             return {"status": "success", "message": "Student deleted"}
     raise HTTPException(status_code=404, detail="Student not found")
 
@@ -163,7 +177,7 @@ async def get_student(student_id: int):
 
 @app.get("/")
 async def root():
-    return {"message": "EduTech Academic Risk Prediction API is running!"}
+    return {"message": "EduTrace Student Performance & Dropout Risk Prediction API is running!"}
 
 if __name__ == "__main__":
     import uvicorn

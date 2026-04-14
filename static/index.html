@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduTech 360 | Integrated Student Management & Prediction</title>
-    <meta name="description" content="A comprehensive AI-driven platform for managing student data, predicting academic risks, and optimizing educational outcomes.">
+    <title>EduTrace | Student Performance & Dropout Risk Prediction</title>
+    <meta name="description" content="A comprehensive AI-driven platform for managing student data, predicting dropout risks, and optimizing educational outcomes.">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
         <aside class="sidebar">
             <div class="logo">
                 <i class="fa-solid fa-graduation-cap"></i>
-                <span>EduTech 360</span>
+                <span>EduTrace</span>
             </div>
             <nav id="sidebarNav">
                 <div class="nav-item active" data-target="dashboardPage">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="nav-item" data-target="predictorPage">
                     <i class="fa-solid fa-chart-line"></i>
-                    <span>Risk Predictor</span>
+                    <span>Dropout Predictor</span>
                 </div>
                 <div class="nav-item" data-target="studentsPage">
                     <i class="fa-solid fa-users"></i>
@@ -43,7 +43,7 @@
                 </div>
             </nav>
             <div class="sidebar-footer">
-                <p>EduTech v2.1.0-ENTERPRISE</p>
+                <p>EduTrace v2.1.0-ENTERPRISE</p>
                 <small>Secure AI Environment</small>
             </div>
         </aside>
@@ -106,7 +106,7 @@
             <section id="predictorPage" class="page-content">
                 <div class="dashboard-grid">
                     <div class="card prediction-form-card">
-                        <h2><i class="fa-solid fa-file-pen"></i> New Risk Analysis</h2>
+                        <h2><i class="fa-solid fa-file-pen"></i> New Dropout Analysis</h2>
                         <form id="riskForm">
                             <div class="form-grid">
                                 <div class="form-group">
@@ -204,7 +204,9 @@
                     </div>
 
                     <div class="card history-card full-width">
-                         <h2><i class="fa-solid fa-history"></i> Analytical History</h2>
+                         <div class="card-header-flex">
+                            <h2><i class="fa-solid fa-history"></i> Analytical History</h2>
+                         </div>
                          <div class="history-table-container">
                             <table>
                                 <thead>
@@ -221,7 +223,7 @@
             <section id="studentsPage" class="page-content">
                 <div class="card">
                     <div class="table-header">
-                        <h2><i class="fa-solid fa-address-book"></i> Enrolled Student database</h2>
+                        <h2><i class="fa-solid fa-address-book"></i> Student Performance Database</h2>
                         <div class="table-actions">
                             <button id="addStudentBtn"><i class="fa-solid fa-plus"></i> Enroll Student</button>
                             <button id="exportData"><i class="fa-solid fa-file-export"></i> Export CSV</button>
@@ -237,6 +239,7 @@
                                     <th>Attendance</th>
                                     <th>Current Grade</th>
                                     <th>Behavior</th>
+                                    <th>Risk Prediction</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -344,6 +347,38 @@
                     <div class="form-group">
                          <label>Assignments</label>
                          <input type="number" name="Assignments_Submitted" id="mAssignments" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Parent Education</label>
+                        <select name="Parent_Education" id="mParentEdu">
+                            <option value="High School">High School</option>
+                            <option value="Bachelor">Bachelor Degree</option>
+                            <option value="Master">Master Degree</option>
+                            <option value="PhD">PhD</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Family Income</label>
+                        <select name="Family_Income" id="mFamilyInc">
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Internet Access</label>
+                        <select name="Internet_Access" id="mInternet">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Initial Risk Status</label>
+                        <select name="Academic_Risk" id="mRisk">
+                            <option value="0">Secure</option>
+                            <option value="1">At Risk</option>
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">

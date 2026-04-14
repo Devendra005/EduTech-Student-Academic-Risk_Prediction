@@ -1,8 +1,8 @@
-# EduTech 360 | Student Management & Academic Risk Prediction
+# EduTrace | Student Performance & Dropout Risk Prediction
 
-EduTech 360 is a premium, full-stack educational management platform that utilizes machine learning to identify students at academic risk while providing a comprehensive suite for student record management.
+EduTrace is a premium, full-stack educational management platform that utilizes machine learning to identify students at dropout risk while providing a comprehensive suite for student performance management.
 
-![EduTech Dashboard Mockup](https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop)
+![EduTrace Dashboard Mockup](https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop)
 
 ## 🚀 Key Features
 
@@ -25,8 +25,8 @@ pip install fastapi uvicorn pandas numpy scikit-learn pydantic
 - `main.py`: The FastAPI backend server and static file host.
 - `train_model.py`: Script to train the ML model and generate the deployment bundle.
 - `static/`: Contains the premium frontend (HTML, CSS, JS).
-- `models/`: Stores the trained model bundle (`academic_risk_model_bundle.pkl`).
-- `student_academic_risk_dataset_5000.csv`: The core student database.
+- `models/`: Stores the trained model bundle (`dropout_risk_model_bundle.pkl`).
+- `student_dropout_risk_dataset_5000.csv`: The core student database.
 
 ## 🏃 Running the Application
 

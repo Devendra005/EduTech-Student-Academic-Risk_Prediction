@@ -21,6 +21,32 @@ function initApp() {
     setupForm();
     setupModals();
     setupSearch();
+    setupExport();
+}
+
+function setupExport() {
+    document.getElementById('exportData').addEventListener('click', async () => {
+        showToast("Generating Export Stream...");
+        try {
+            const res = await fetch('/students?limit=5000');
+            const data = await res.json();
+            if (data.length === 0) return;
+            
+            const headers = Object.keys(data[0]).join(',');
+            const rows = data.map(obj => Object.values(obj).join(',')).join('\n');
+            const csvContent = "data:text/csv;charset=utf-8," + headers + "\n" + rows;
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `EduTrace_Student_Data_${new Date().toLocaleDateString()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            showToast("CSV Export Successful.");
+        } catch (err) {
+            showToast("Export Failed.");
+        }
+    });
 }
 
 // --- SEARCH LOGIC ---
@@ -120,6 +146,10 @@ async function editStudent(id) {
         document.getElementById('mPrevGrade').value = student.Previous_Grade;
         document.getElementById('mStudy').value = student.Study_Hours;
         document.getElementById('mAssignments').value = student.Assignments_Submitted;
+        document.getElementById('mParentEdu').value = student.Parent_Education || "Unknown";
+        document.getElementById('mFamilyInc').value = student.Family_Income || "Medium";
+        document.getElementById('mInternet').value = student.Internet_Access || "No";
+        document.getElementById('mRisk').value = student.Academic_Risk ?? 0;
 
         document.getElementById('studentModal').classList.add('active');
     } catch (err) { showToast("Record Retrieval Error."); }
@@ -128,7 +158,7 @@ async function editStudent(id) {
 // --- DATA FETCHING ---
 async function loadStudents(query = "") {
     const body = document.getElementById('fullStudentsBody');
-    body.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 50px;">Processing Database...</td></tr>';
+    body.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 50px;">Processing Database...</td></tr>';
     
     try {
         const url = query ? `/students?search=${encodeURIComponent(query)}` : '/students';
@@ -137,11 +167,13 @@ async function loadStudents(query = "") {
         
         body.innerHTML = '';
         if (students.length === 0) {
-            body.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 50px; opacity:0.5;">No records found matching criteria.</td></tr>';
+            body.innerHTML = '<tr><td colspan="8" style="text-align:center; padding: 50px; opacity:0.5;">No records found matching criteria.</td></tr>';
             return;
         }
 
         students.forEach(student => {
+            const riskStatus = student.Academic_Risk === 1 ? 'At Risk' : 'Secure';
+            const riskColor = student.Academic_Risk === 1 ? 'var(--accent-red)' : 'var(--accent-green)';
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td style="font-weight:800; color:var(--primary-color)">#${student.Student_ID}</td>
@@ -150,6 +182,7 @@ async function loadStudents(query = "") {
                 <td>${student.Attendance_Percentage}%</td>
                 <td><span style="font-weight:600">${student.Current_Grade}</span></td>
                 <td><div class="trend" style="color:var(--accent-green)">Score: ${student.Behavior_Score}/10</div></td>
+                <td><span class="status-badge" style="background:${riskColor}22; color:${riskColor}; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">${riskStatus}</span></td>
                 <td>
                     <button class="small-action" onclick="editStudent(${student.Student_ID})"><i class="fa-solid fa-pen"></i></button>
                     <button class="small-action" onclick="deleteStudent(${student.Student_ID})" style="color:var(--accent-red)"><i class="fa-solid fa-trash"></i></button>
@@ -182,8 +215,8 @@ function setupNavigation() {
 function updateHeader(pageId, title, desc) {
     const headers = {
         dashboardPage: ["Dashboard Overview", "Global system statistics and institutional performance trends."],
-        predictorPage: ["AI Risk Predictor", "Diagnostic neural analysis for individual student academic risk."],
-        studentsPage: ["Student Database", "Search and manage centralized student records."],
+        predictorPage: ["Dropout Risk Predictor", "Diagnostic neural analysis for individual student dropout risk."],
+        studentsPage: ["Student Performance Database", "Search and manage centralized student records."],
         analyticsPage: ["Institutional Analytics", "Advanced data visualization of AI influence factors."],
         settingsPage: ["Portal Settings", "Configure system security, biometrics, and AI behavior."]
     };
@@ -243,24 +276,37 @@ function showPredictResult(result) {
 }
 
 function saveToHistory(input, result) {
-    let history = JSON.parse(localStorage.getItem('eduTechHistoryV2') || '[]');
+    let history = JSON.parse(localStorage.getItem('eduTraceHistoryV1') || '[]');
     history.unshift({ date: new Date().toLocaleTimeString(), id: input.Student_ID || 'NEW', grade: input.Current_Grade, score: result.risk_score, status: result.status, prediction: result.prediction });
-    localStorage.setItem('eduTechHistoryV2', JSON.stringify(history.slice(0, 10)));
+    localStorage.setItem('eduTraceHistoryV1', JSON.stringify(history.slice(0, 10)));
     loadHistory();
 }
 
 function loadHistory() {
-    const history = JSON.parse(localStorage.getItem('eduTechHistoryV2') || '[]');
-    const body = document.getElementById('historyBody'); body.innerHTML = '';
-    if (history.length === 0) { body.innerHTML = '<tr><td colspan="5" style="text-align:center; opacity:0.3; padding: 20px;">No History.</td></tr>'; return; }
-    history.forEach(item => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td>${item.date}</td><td style="font-weight: 800">#${item.id}</td><td>${item.grade}</td><td style="color:var(--primary-color); font-weight:800">${item.score}%</td><td><span class="trend" style="color:${item.prediction === 1 ? 'var(--accent-red)' : 'var(--accent-green)'}">${item.status}</span></td>`;
-        body.appendChild(row);
-    });
+    try {
+        const historyData = localStorage.getItem('eduTraceHistoryV1');
+        const history = historyData ? JSON.parse(historyData) : [];
+        const body = document.getElementById('historyBody');
+        if (!body) return;
+        body.innerHTML = '';
+        
+        if (history.length === 0) {
+            body.innerHTML = '<tr><td colspan="5" style="text-align:center; opacity:0.3; padding: 20px;">No Recent Analytics.</td></tr>';
+            return;
+        }
+        
+        history.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `<td>${item.date}</td><td style="font-weight: 800">#${item.id}</td><td>${item.grade}</td><td style="color:var(--primary-color); font-weight:800">${item.score}%</td><td><span class="trend" style="color:${item.prediction === 1 ? 'var(--accent-red)' : 'var(--accent-green)'}">${item.status}</span></td>`;
+            body.appendChild(row);
+        });
+    } catch (err) {
+        console.error("History Retrieval Failure:", err);
+    }
 }
 
 function showToast(msg) {
     const toast = document.getElementById('toast'); toast.innerText = msg; toast.classList.add('active');
     setTimeout(() => toast.classList.remove('active'), 3000);
 }
+

@@ -95,4 +95,4 @@ model_bundle = {
 with open("models/academic_risk_model_bundle.pkl", "wb") as f:
     pickle.dump(model_bundle, f)
 
-print("Model Bundle Saved Successfully in 'models/academic_risk_model_bundle.pkl'")
+print("Model Bundle Saved Successfully in 'models/dropout_risk_model_bundle.pkl'")

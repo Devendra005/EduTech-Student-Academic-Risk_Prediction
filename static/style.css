@@ -260,8 +260,39 @@ header {
     padding: 32px;
 }
 
-.card h2 { font-size: 22px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+.card h2 { font-size: 22px; display: flex; align-items: center; gap: 12px; }
 .card h2 i { color: var(--primary-color); }
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.card-header-flex h2 { margin-bottom: 0; }
+
+.small-btn-outline {
+    background: rgba(0, 224, 255, 0.05);
+    border: 1px solid rgba(0, 224, 255, 0.2);
+    color: var(--primary-color);
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.small-btn-outline:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
 
 /* Form Styles */
 .form-grid {
