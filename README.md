@@ -60,7 +60,8 @@ taskkill /F /PID <PID>
 
 ### 3. Accessing the Platform
 Open your browser and navigate to the root endpoint:
-👉 **[http://localhost:8000/](http://localhost:8000/)**
+👉 **[http://localh
+ost:8000/](http://localhost:8000/)**
 
 ## 📊 Using the Platform
 
